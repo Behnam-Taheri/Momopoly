@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.4" />
+
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tactical.Monopoly.Application.Contract\Tactical.Monopoly.Application.Contract.csproj" />
+    <ProjectReference Include="..\Tactical.Monopoly.Application\Tactical.Monopoly.Application.csproj" />
+    <ProjectReference Include="..\Tactical.Monopoly.Persistence.EF\Tactical.Monopoly.Persistence.EF.csproj" />
+    <ProjectReference Include="..\Tactical.Monopoly.Queries.Contracts\Tactical.Monopoly.Queries.Contracts.csproj" />
+    <ProjectReference Include="..\Tactical.Monopoly.Queries.Retrival.EF\Tactical.Monopoly.Queries.Retrieval.EF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

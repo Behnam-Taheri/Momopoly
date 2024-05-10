@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tactical.Monopoly.Queries.Contracts\Tactical.Monopoly.Queries.Contracts.csproj" />
+    <ProjectReference Include="..\Tactical.Monopoly.Queries.EF\Tactical.Monopoly.Queries.EF.csproj" />
+  </ItemGroup>
+
+</Project>
