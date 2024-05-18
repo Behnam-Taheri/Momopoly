@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Tactical.Monopoly.Queries.EF.Models;
 
-namespace Tactical.Monopoly.Queries.EF.Models;
-
-public partial class BoardScore
+public class BoardScore
 {
     public long Id { get; set; }
 

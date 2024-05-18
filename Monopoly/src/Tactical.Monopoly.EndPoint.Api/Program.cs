@@ -12,6 +12,7 @@ using Tactical.Monopoly.Domain.Boards.Contracts;
 using Tactical.Monopoly.Persistence.EF.Boards;
 using Tactical.Monopoly.Persistence.EF.Contexts;
 using Tactical.Monopoly.Queries.Contracts;
+using Tactical.Monopoly.Queries.EF;
 using Tactical.Monopoly.Queries.Retrieval.EF;
 
 
@@ -59,10 +60,10 @@ app.Run();
 
 void AddDbContext(WebApplicationBuilder webApplicationBuilder)
 {
-    webApplicationBuilder.Services.AddDbContext<DbContext, MonopolyContext>(options =>
+    webApplicationBuilder.Services.AddDbContext<RetrievalDbContext>(options =>
     {
         options.UseNpgsql(webApplicationBuilder.Configuration.GetConnectionString("MonopolyConnectionString"),
-            sqlOptions => { sqlOptions.MigrationsAssembly(typeof(MonopolyContext).Assembly.FullName); });
+            sqlOptions => { sqlOptions.MigrationsAssembly(typeof(RetrievalDbContext).Assembly.FullName); });
 
 
         if (webApplicationBuilder.Environment.IsProduction()) return;
@@ -75,4 +76,21 @@ void AddDbContext(WebApplicationBuilder webApplicationBuilder)
                 CoreEventId.RowLimitingOperationWithoutOrderByWarning);
         });
     });
+
+
+    webApplicationBuilder.Services.AddDbContext<DbContext, MonopolyContext>(options =>
+    {
+        options.UseNpgsql(webApplicationBuilder.Configuration.GetConnectionString("MonopolyConnectionString"));
+
+        if (webApplicationBuilder.Environment.IsProduction()) return;
+
+        options.EnableDetailedErrors();
+        options.EnableSensitiveDataLogging();
+        options.ConfigureWarnings(warningLog =>
+        {
+            warningLog.Log(CoreEventId.FirstWithoutOrderByAndFilterWarning,
+                CoreEventId.RowLimitingOperationWithoutOrderByWarning);
+        });
+    });
+
 }

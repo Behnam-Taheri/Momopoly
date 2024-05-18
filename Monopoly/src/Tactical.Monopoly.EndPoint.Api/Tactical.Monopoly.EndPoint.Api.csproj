@@ -32,6 +32,7 @@
     <ProjectReference Include="..\Tactical.Monopoly.Application\Tactical.Monopoly.Application.csproj" />
     <ProjectReference Include="..\Tactical.Monopoly.Persistence.EF\Tactical.Monopoly.Persistence.EF.csproj" />
     <ProjectReference Include="..\Tactical.Monopoly.Queries.Contracts\Tactical.Monopoly.Queries.Contracts.csproj" />
+    <ProjectReference Include="..\Tactical.Monopoly.Queries.EF\Tactical.Monopoly.Queries.EF.csproj" />
     <ProjectReference Include="..\Tactical.Monopoly.Queries.Retrival.EF\Tactical.Monopoly.Queries.Retrieval.EF.csproj" />
   </ItemGroup>
 

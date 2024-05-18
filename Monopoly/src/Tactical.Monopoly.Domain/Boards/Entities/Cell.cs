@@ -34,7 +34,7 @@ namespace Tactical.Monopoly.Domain.Boards.Entities
         public bool Buyable { get; private set; }
         public Guid OwnerId { get; private set; }
 
-        public IReadOnlyCollection<PlayerId> CellPlayerIds => cellPlayerIds.AsReadOnly();
+        public IReadOnlyCollection<PlayerId> PlayerIds => cellPlayerIds.AsReadOnly();
 
         //TODO
         //ICon

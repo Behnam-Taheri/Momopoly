@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using System.Linq.Expressions;
-using Tactical.Framework.Core.Abstractions;
 
 namespace Tactical.Framework.Persistence.EF
 {
@@ -22,14 +20,12 @@ namespace Tactical.Framework.Persistence.EF
 
         public TAggregate? Get(Expression<Func<TAggregate, bool>> predicate)
         {
-            var aggregate = ConvertToAggregate(_context.Set<TAggregate>());
-            return aggregate.FirstOrDefault(predicate);
+            return _context.Set<TAggregate>().FirstOrDefault(predicate);
         }
 
         public async Task<TAggregate?> GetAsync(Expression<Func<TAggregate, bool>> predicate, CancellationToken cancellationToken)
         {
-            var aggregate = ConvertToAggregate(_context.Set<TAggregate>());
-            return await aggregate.FirstOrDefaultAsync(predicate, cancellationToken);
+            return await _context.Set<TAggregate>().FirstOrDefaultAsync(predicate, cancellationToken);
         }
 
         public async Task CreateAsync(TAggregate aggregate)
@@ -41,33 +37,5 @@ namespace Tactical.Framework.Persistence.EF
         {
             throw new NotImplementedException();
         }
-
-        protected abstract Expression<Func<TAggregate, object>>[] GetIncludeExpressions();
-
-        private IQueryable<TAggregate> ConvertToAggregate(IQueryable<TAggregate> set)
-        {
-            var result = set;
-            var includeExpressions = GetIncludeExpressions();
-
-            if (includeExpressions != null)
-            {
-                foreach (var expression in includeExpressions)
-                {
-                    result = result.Include(expression);
-                }
-            }
-
-            return result;
-        }
-    }
-
-    public interface IRepository<TAggregate> where TAggregate : class
-    {
-        Task CreateAsync(TAggregate aggregate);
-        void SaveChanges(TAggregate aggregate);
-        void Delete(TAggregate aggregate);
-        TAggregate? Get(Expression<Func<TAggregate, bool>> predicate);
-        Task<TAggregate?> GetAsync(Expression<Func<TAggregate, bool>> predicate, CancellationToken cancellationToken);
-
     }
 }

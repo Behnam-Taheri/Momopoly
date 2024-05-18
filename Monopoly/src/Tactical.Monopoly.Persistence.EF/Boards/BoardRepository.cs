@@ -12,13 +12,5 @@ namespace Tactical.Monopoly.Persistence.EF.Boards
         {
 
         }
-
-        protected override Expression<Func<Board, object>>[] GetIncludeExpressions()
-        {
-            return new Expression<Func<Board, object>>[]
-            {
-                x=>x.Cells
-            };
-        }
     }
 }

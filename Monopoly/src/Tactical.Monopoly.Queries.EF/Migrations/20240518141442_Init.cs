@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Tactical.Monopoly.Persistence.EF.Migrations
+namespace Tactical.Monopoly.Queries.EF.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -34,6 +34,27 @@ namespace Tactical.Monopoly.Persistence.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Player", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BoardScore",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Score = table.Column<int>(type: "integer", nullable: false),
+                    PlayerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BoardId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoardScore", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BoardScore_Board_BoardId",
+                        column: x => x.BoardId,
+                        principalTable: "Board",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,13 +103,12 @@ namespace Tactical.Monopoly.Persistence.EF.Migrations
                         principalTable: "Cell",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PlayerId_Player_Value",
-                        column: x => x.Value,
-                        principalTable: "Player",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BoardScore_BoardId",
+                table: "BoardScore",
+                column: "BoardId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cell_BoardId",
@@ -99,24 +119,22 @@ namespace Tactical.Monopoly.Persistence.EF.Migrations
                 name: "IX_PlayerId_CellId",
                 table: "PlayerId",
                 column: "CellId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlayerId_Value",
-                table: "PlayerId",
-                column: "Value");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BoardScore");
+
+            migrationBuilder.DropTable(
+                name: "Player");
+
+            migrationBuilder.DropTable(
                 name: "PlayerId");
 
             migrationBuilder.DropTable(
                 name: "Cell");
-
-            migrationBuilder.DropTable(
-                name: "Player");
 
             migrationBuilder.DropTable(
                 name: "Board");

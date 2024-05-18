@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Tactical.Monopoly.Persistence.EF.Contexts;
+using Tactical.Monopoly.Queries.EF;
 
 #nullable disable
 
-namespace Tactical.Monopoly.Persistence.EF.Migrations
+namespace Tactical.Monopoly.Queries.EF.Migrations
 {
-    [DbContext(typeof(MonopolyContext))]
-    [Migration("20240430095438_AddBoardScoresToDb")]
-    partial class AddBoardScoresToDb
+    [DbContext(typeof(RetrievalDbContext))]
+    [Migration("20240518141442_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,9 +25,10 @@ namespace Tactical.Monopoly.Persistence.EF.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Boards.Board", b =>
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.Board", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("GameStartTime")
@@ -38,7 +39,31 @@ namespace Tactical.Monopoly.Persistence.EF.Migrations
                     b.ToTable("Board", (string)null);
                 });
 
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Boards.Entities.Cell", b =>
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.BoardScore", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<Guid>("BoardId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BoardId");
+
+                    b.ToTable("BoardScore", (string)null);
+                });
+
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.Cell", b =>
                 {
                     b.Property<short>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,31 +109,21 @@ namespace Tactical.Monopoly.Persistence.EF.Migrations
                     b.ToTable("Cell", (string)null);
                 });
 
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Boards.ValueObjects.BoardScore", b =>
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.Player", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<Guid>("BoardId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("PlayerId")
+                    b.Property<Guid?>("BoardId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BoardId");
-
-                    b.ToTable("BoardScore", (string)null);
+                    b.ToTable("Player", (string)null);
                 });
 
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Boards.ValueObjects.PlayerId", b =>
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.PlayerId", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,67 +141,52 @@ namespace Tactical.Monopoly.Persistence.EF.Migrations
 
                     b.HasIndex("CellId");
 
-                    b.HasIndex("Value");
-
                     b.ToTable("PlayerId", (string)null);
                 });
 
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Players.Player", b =>
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.BoardScore", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("BoardId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Player", (string)null);
-                });
-
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Boards.Entities.Cell", b =>
-                {
-                    b.HasOne("Tactical.Monopoly.Domain.Boards.Board", null)
-                        .WithMany("Cells")
-                        .HasForeignKey("BoardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Boards.ValueObjects.BoardScore", b =>
-                {
-                    b.HasOne("Tactical.Monopoly.Domain.Boards.Board", null)
+                    b.HasOne("Tactical.Monopoly.Queries.EF.Models.Board", "Board")
                         .WithMany("BoardScores")
                         .HasForeignKey("BoardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Board");
                 });
 
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Boards.ValueObjects.PlayerId", b =>
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.Cell", b =>
                 {
-                    b.HasOne("Tactical.Monopoly.Domain.Boards.Entities.Cell", null)
-                        .WithMany("CellPlayerIds")
+                    b.HasOne("Tactical.Monopoly.Queries.EF.Models.Board", "Board")
+                        .WithMany("Cells")
+                        .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Board");
+                });
+
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.PlayerId", b =>
+                {
+                    b.HasOne("Tactical.Monopoly.Queries.EF.Models.Cell", "Cell")
+                        .WithMany("PlayerIds")
                         .HasForeignKey("CellId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tactical.Monopoly.Domain.Players.Player", null)
-                        .WithMany()
-                        .HasForeignKey("Value")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Cell");
                 });
 
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Boards.Board", b =>
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.Board", b =>
                 {
                     b.Navigation("BoardScores");
 
                     b.Navigation("Cells");
                 });
 
-            modelBuilder.Entity("Tactical.Monopoly.Domain.Boards.Entities.Cell", b =>
+            modelBuilder.Entity("Tactical.Monopoly.Queries.EF.Models.Cell", b =>
                 {
-                    b.Navigation("CellPlayerIds");
+                    b.Navigation("PlayerIds");
                 });
 #pragma warning restore 612, 618
         }

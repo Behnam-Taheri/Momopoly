@@ -8,11 +8,11 @@ namespace Tactical.Monopoly.EndPoint.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class BoardsController : ControllerBase
     {
         private readonly ICommandBus _commandBus;
         private readonly IBoardReadRepository _boardRepository;
-        public OrdersController(ICommandBus commandBus, IBoardReadRepository boardRepository)
+        public BoardsController(ICommandBus commandBus, IBoardReadRepository boardRepository)
         {
             _commandBus = commandBus;
             _boardRepository = boardRepository;

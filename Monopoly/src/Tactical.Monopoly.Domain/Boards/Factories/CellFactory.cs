@@ -69,6 +69,7 @@ namespace Tactical.Monopoly.Domain.Boards.Factories
             cells.Add(gorgan);
             cells.Add(rasht);
             cells.Add(rahAhan);
+            cells.Add(tax1);
             cells.Add(ahvaz);
             cells.Add(kerman);
             cells.Add(jail);

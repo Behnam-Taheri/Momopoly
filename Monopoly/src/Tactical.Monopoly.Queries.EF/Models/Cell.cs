@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Tactical.Monopoly.Queries.EF.Models;
 
-namespace Tactical.Monopoly.Queries.EF.Models;
-
-public partial class Cell
+public class Cell
 {
     public short Id { get; set; }
 

@@ -37,11 +37,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tactical.Monopoly.DomainSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tactical.Monopoly.Application.Contract", "Monopoly\src\Tactical.Monopoly.Application.Contract\Tactical.Monopoly.Application.Contract.csproj", "{6699249C-7E9C-470C-B8BE-BEFF9477FAC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.Monopoly.Queries.EF", "Monopoly\src\Tactical.Monopoly.Queries.EF\Tactical.Monopoly.Queries.EF.csproj", "{2698C669-11FB-457D-ACAA-F1D6220C258B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tactical.Monopoly.Queries.EF", "Monopoly\src\Tactical.Monopoly.Queries.EF\Tactical.Monopoly.Queries.EF.csproj", "{2698C669-11FB-457D-ACAA-F1D6220C258B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.Monopoly.Queries.Retrieval.EF", "Monopoly\src\Tactical.Monopoly.Queries.Retrival.EF\Tactical.Monopoly.Queries.Retrieval.EF.csproj", "{A36B29F6-78DB-48C4-A19B-1BB93A2BA8A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tactical.Monopoly.Queries.Retrieval.EF", "Monopoly\src\Tactical.Monopoly.Queries.Retrival.EF\Tactical.Monopoly.Queries.Retrieval.EF.csproj", "{A36B29F6-78DB-48C4-A19B-1BB93A2BA8A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.Monopoly.Queries.Contracts", "Monopoly\src\Tactical.Monopoly.Queries.Contracts\Tactical.Monopoly.Queries.Contracts.csproj", "{9408315E-50E2-43A8-97E7-C6AD41015FFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tactical.Monopoly.Queries.Contracts", "Monopoly\src\Tactical.Monopoly.Queries.Contracts\Tactical.Monopoly.Queries.Contracts.csproj", "{9408315E-50E2-43A8-97E7-C6AD41015FFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.Monopoly.Persistence.Mongo", "Monopoly\src\Tactical.Monopoly.Persistence.Mongo\Tactical.Monopoly.Persistence.Mongo.csproj", "{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +103,10 @@ Global
 		{9408315E-50E2-43A8-97E7-C6AD41015FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9408315E-50E2-43A8-97E7-C6AD41015FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9408315E-50E2-43A8-97E7-C6AD41015FFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{2698C669-11FB-457D-ACAA-F1D6220C258B} = {03D8B19E-BE91-49BD-8C55-01F19CDCFE6C}
 		{A36B29F6-78DB-48C4-A19B-1BB93A2BA8A7} = {03D8B19E-BE91-49BD-8C55-01F19CDCFE6C}
 		{9408315E-50E2-43A8-97E7-C6AD41015FFA} = {03D8B19E-BE91-49BD-8C55-01F19CDCFE6C}
+		{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91} = {93B00990-0F8C-48E6-AB64-6E4EEAB478A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F7943FE9-9E63-4E64-98F8-4D472BB0805C}

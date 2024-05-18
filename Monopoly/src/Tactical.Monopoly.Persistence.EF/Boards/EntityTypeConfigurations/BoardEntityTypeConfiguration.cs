@@ -1,8 +1,7 @@
-﻿using IdGen;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tactical.Monopoly.Domain.Boards;
-using Tactical.Monopoly.Domain.Boards.ValueObjects;
+using Tactical.Monopoly.Domain.Boards.Entities;
 
 namespace Tactical.Monopoly.Persistence.EF.Boards.EntityTypeConfigurations
 {
@@ -13,19 +12,30 @@ namespace Tactical.Monopoly.Persistence.EF.Boards.EntityTypeConfigurations
             builder.ToTable(nameof(Board));
             builder.Property(p => p.Id).ValueGeneratedNever();
 
-            //builder.Ignore(p => p.PlayerIds);
 
-            builder.HasMany(x => x.Cells).WithOne().HasForeignKey(x => x.BoardId);
-            builder.HasMany(x => x.BoardScores).WithOne().HasForeignKey(x => x.BoardId);
+            builder.OwnsMany(x => x.Cells, o =>
+            {
+                o.ToTable(nameof(Cell));
+                o.HasKey(x => x.Id);
+                o.WithOwner().HasForeignKey(x => x.BoardId);
+                o.Property(p => p.Name);
+                o.Property(p => p.Position);
+                o.Property(p => p.Group);
+                o.Property(p => p.Price);
+                o.Property(p => p.Buyable);
+                o.Property(p => p.OwnerId);
+                o.OwnsMany(x => x.PlayerIds, c =>
+                {
+                    c.Property(p => p.Value);
+                });
+            });
+
+            builder.OwnsMany(x => x.BoardScores, o =>
+            {
+                o.Property(p => p.Score);
+                o.Property(p => p.PlayerId);
+                o.Property(p => p.BoardId);
+            });
         }
     }
-
-    //internal class BoardScoresEntityTypeConfiguration : IEntityTypeConfiguration<BoardScore>
-    //{
-    //    public void Configure(EntityTypeBuilder<BoardScore> builder)
-    //    {
-    //        builder.ToTable(nameof(BoardScore));
-    //        builder.Property(p => p.Id);
-    //    }
-    //}
 }

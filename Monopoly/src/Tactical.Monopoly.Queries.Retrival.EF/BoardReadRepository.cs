@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System.Linq.Expressions;
 using Tactical.Monopoly.Queries.Contracts;
-using Tactical.Monopoly.Queries.Contracts.Options;
 using Tactical.Monopoly.Queries.EF;
 using Tactical.Monopoly.Queries.EF.Models;
 
@@ -11,16 +7,20 @@ namespace Tactical.Monopoly.Queries.Retrieval.EF
 {
     public class BoardReadRepository : IBoardReadRepository
     {
-        private readonly RetrievalDbContext dbContext;
+        private readonly RetrievalDbContext _context;
 
-        public BoardReadRepository(IOptionsMonitor<ConnectionStrings> options)
+        public BoardReadRepository(RetrievalDbContext context)
         {
-            dbContext = new RetrievalDbContext(options.CurrentValue.MonopolyConnectionString!);
+            _context = context;
         }
 
         public Task<Board?> GetAsync(Guid id, CancellationToken cancellationToken)
         {
-            return dbContext.Boards.Where(x => x.Id == id).Include(x => x.Cells).ThenInclude(x => x.PlayerIds).FirstOrDefaultAsync(cancellationToken);
+            return _context.Boards.Where(x => x.Id == id)
+                .Include(x => x.Cells)
+                .ThenInclude(x => x.PlayerIds)
+                .Include(x=>x.BoardScores)
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

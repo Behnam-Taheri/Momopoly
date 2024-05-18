@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Tactical.Monopoly.Queries.EF.Models;
 
-namespace Tactical.Monopoly.Queries.EF.Models;
-
-public partial class PlayerId
+public class PlayerId
 {
     public long Id { get; set; }
 
@@ -13,5 +10,5 @@ public partial class PlayerId
 
     public virtual Cell Cell { get; set; } = null!;
 
-    public virtual Player ValueNavigation { get; set; } = null!;
+    //public virtual Player Player { get; set; } = null!;
 }
