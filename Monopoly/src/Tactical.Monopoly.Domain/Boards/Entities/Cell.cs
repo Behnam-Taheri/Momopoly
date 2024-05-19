@@ -8,7 +8,7 @@ namespace Tactical.Monopoly.Domain.Boards.Entities
     public class Cell : Entity<short>
     {
         private const int MaxNumberOfHouse = 3;
-        private List<PlayerId> cellPlayerIds = new();
+        private List<PlayerId> playerIds = new();
         private Cell() { }
         public Cell(Guid boardId, string name, short position, Group group, short price, bool buyable, bool manufacturable, int priceOfHouse)
         {
@@ -34,7 +34,7 @@ namespace Tactical.Monopoly.Domain.Boards.Entities
         public bool Buyable { get; private set; }
         public Guid OwnerId { get; private set; }
 
-        public IReadOnlyCollection<PlayerId> PlayerIds => cellPlayerIds.AsReadOnly();
+        public IReadOnlyCollection<PlayerId> PlayerIds => playerIds.AsReadOnly();
 
         //TODO
         //ICon
@@ -55,13 +55,18 @@ namespace Tactical.Monopoly.Domain.Boards.Entities
         {
             foreach (var playerId in playerIds)
             {
-                cellPlayerIds.Add(new PlayerId(playerId));
+                this.playerIds.Add(new PlayerId(playerId));
             }
+        }
+
+        public void AddPlayer(Guid playerId)
+        {
+            playerIds.Add(new PlayerId(playerId));
         }
 
         public void RemovePlayer(Guid playerId)
         {
-            cellPlayerIds.Remove(new PlayerId(playerId));
+            playerIds.Remove(new PlayerId(playerId));
         }
     }
 }

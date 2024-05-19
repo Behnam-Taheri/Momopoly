@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tactical.Framework.Application.CQRS.CommandHandling;
+using Tactical.Monopoly.Application.Boards.CommandHandlers;
 using Tactical.Monopoly.Application.Contract.Boards.Commands;
 using Tactical.Monopoly.Domain.Boards.Contracts;
 using Tactical.Monopoly.Queries.Contracts;
@@ -40,9 +41,9 @@ namespace Tactical.Monopoly.EndPoint.Api.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> Patch(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Patch(MovePlayerCommand command, CancellationToken cancellationToken)
         {
-            await _commandBus.DispatchAsync(new DeleteBoardCommand(id), cancellationToken);
+            await _commandBus.DispatchAsync(command, cancellationToken);
             return Ok();
         }
     }

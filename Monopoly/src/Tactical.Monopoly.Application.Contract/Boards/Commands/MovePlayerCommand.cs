@@ -3,7 +3,7 @@
 
 namespace Tactical.Monopoly.Application.Contract.Boards.Commands
 {
-    public record MovePlayerCommand(Guid BoardId,long PlayerId,int DiceNumber) : ICommand;
+    public record MovePlayerCommand(Guid BoardId,Guid PlayerId,int DiceNumber) : ICommand;
 
 
 }

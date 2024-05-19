@@ -38,6 +38,7 @@ builder.Services.AddScoped<IEventBus, EventBus>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<ICommandHandler<CreateBoardCommand>, CreateBoardCommandHandler>();
 builder.Services.AddTransient<ICommandHandler<DeleteBoardCommand>, DeleteBoardCommandHandler>();
+builder.Services.AddTransient<ICommandHandler<MovePlayerCommand>, MovePlayerCommandHandler>();
 
 
 builder.Configuration.GetSection("ConnectionStrings.MonopolyConnectionString");

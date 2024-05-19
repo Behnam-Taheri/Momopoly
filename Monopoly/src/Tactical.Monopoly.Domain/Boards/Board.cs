@@ -6,11 +6,12 @@ namespace Tactical.Monopoly.Domain.Boards
 {
     public partial class Board : AggregateRoot<Guid>
     {
-        private List<Cell> cells;
-        private List<BoardScore> boardScore;
+        private List<Cell> _cells = new();
+        private List<BoardScore> _boardScores = new();
+
 
         public DateTime GameStartTime { get; set; }
-        public IReadOnlyCollection<Cell> Cells => cells.AsReadOnly();
-        public IReadOnlyCollection<BoardScore> BoardScores => boardScore.AsReadOnly();
+        public IReadOnlyCollection<Cell> Cells => _cells;
+        public IReadOnlyCollection<BoardScore> BoardScores => _boardScores;
     }
 }

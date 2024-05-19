@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tactical.Monopoly.Domain.Boards;
 using Tactical.Monopoly.Domain.Boards.Entities;
+using Tactical.Monopoly.Domain.Boards.ValueObjects;
 
 namespace Tactical.Monopoly.Persistence.EF.Boards.EntityTypeConfigurations
 {
@@ -11,7 +12,6 @@ namespace Tactical.Monopoly.Persistence.EF.Boards.EntityTypeConfigurations
         {
             builder.ToTable(nameof(Board));
             builder.Property(p => p.Id).ValueGeneratedNever();
-
 
             builder.OwnsMany(x => x.Cells, o =>
             {
@@ -32,6 +32,8 @@ namespace Tactical.Monopoly.Persistence.EF.Boards.EntityTypeConfigurations
 
             builder.OwnsMany(x => x.BoardScores, o =>
             {
+                o.ToTable(nameof(BoardScore));
+                o.WithOwner().HasForeignKey(x => x.BoardId);
                 o.Property(p => p.Score);
                 o.Property(p => p.PlayerId);
                 o.Property(p => p.BoardId);

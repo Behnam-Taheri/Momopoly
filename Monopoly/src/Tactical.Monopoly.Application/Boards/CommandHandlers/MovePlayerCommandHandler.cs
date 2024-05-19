@@ -15,7 +15,9 @@ namespace Tactical.Monopoly.Application.Boards.CommandHandlers
 
         public override async Task HandleAsync(MovePlayerCommand command, CancellationToken cancellationToken)
         {
-            var board = await _boardRepository.GetAsync(x => x.Id == command.BoardId, cancellationToken);
+            var board = await _boardRepository.GetAsync(x => x.Id == command.BoardId, cancellationToken)??throw new Exception();
+
+            board.MovePlayer(command.PlayerId, command.DiceNumber);
         }
     }
 }
