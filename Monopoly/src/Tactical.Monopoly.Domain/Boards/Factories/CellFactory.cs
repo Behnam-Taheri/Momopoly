@@ -39,7 +39,7 @@ namespace Tactical.Monopoly.Domain.Boards.Factories
 
             var yazd = new Cell(boardId, "Yazd", 13, Group.Green, 160, true, true, 0);
 
-            var powerCompany = new Cell(boardId, "PowerCompany", 14, Group.Green, 100, true, false, 0);
+            var powerCompany = new Cell(boardId, "PowerCompany", 14, Group.Infrastructure, 100, true, false, 0);
 
             var esfahan = new Cell(boardId, "Esfahan", 15, Group.Orange, 260, true, true, 80);
 

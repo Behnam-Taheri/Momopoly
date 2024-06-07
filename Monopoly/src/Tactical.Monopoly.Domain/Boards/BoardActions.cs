@@ -1,5 +1,6 @@
 ﻿using Tactical.Monopoly.Domain.Boards.Entities;
 using Tactical.Monopoly.Domain.Boards.Factories;
+using Tactical.Monopoly.Domain.Boards.ValueObjects;
 
 namespace Tactical.Monopoly.Domain.Boards
 {
@@ -19,22 +20,27 @@ namespace Tactical.Monopoly.Domain.Boards
         public void MovePlayer(Guid playerId, int diceNumber)
         {
             ValidateDiceNumber(diceNumber);
-            ChangeCell(playerId, diceNumber);
-            CheckOwners();
+            var currentCell = ChangeCell(playerId, diceNumber);
+            CheckOwners(currentCell, playerId);
         }
 
-        private void CheckOwners()
+        private void CheckOwners(Cell cell, Guid playerId)
         {
-            throw new NotImplementedException();
+            if (cell.OwnerId != default && cell.OwnerId != playerId)
+            {
+                var playerScore = _boardScores.First(x => x.PlayerId == playerId);
+                playerScore = playerScore.MinusScore(cell.GetCost());
+            }
+
         }
 
-        public void BuyCell(short cellId, long playerId)
+        public void BuyCell(short position, Guid playerId)
         {
-            var cell = Cells.First(x => x.Id == cellId);
-            cell.BuyValidate();
+            var cell = FindCellByPosition(position);
+            cell.Buy(playerId);
         }
 
-        private void ChangeCell(Guid playerId, int diceNumber)
+        private Cell ChangeCell(Guid playerId, int diceNumber)
         {
             var currentPosition = GetAndRemoveCurrentPosition(playerId);
 
@@ -43,10 +49,11 @@ namespace Tactical.Monopoly.Domain.Boards
             if (currentPosition > 20 && nextPosition > CountOfCell)
                 nextPosition = CountOfCell - currentPosition;
 
-
             var nextPositionCell = FindCellByPosition((short)nextPosition);
 
             nextPositionCell.AddPlayer(playerId);
+
+            return nextPositionCell;
         }
 
         private short GetAndRemoveCurrentPosition(Guid playerId)
@@ -56,13 +63,18 @@ namespace Tactical.Monopoly.Domain.Boards
             return currentPositionCell.Position;
         }
 
-        private Cell FindCellByPlayerId(Guid playerId) => _cells.Where(x => x.PlayerIds.Any(x => x.Value == playerId)).First();
+        private Cell FindCellByPlayerId(Guid playerId) => _cells.First(x => x.PlayerIds.Any(i => i.Value == playerId));
         private Cell FindCellByPosition(short position) => _cells.First(x => x.Position == position);
 
         private static void ValidateDiceNumber(int diceNumber)
         {
             if (diceNumber is > 6 or < 1)
                 throw new Exception();
+        }
+
+        private void ReplaceScore(BoardScore score)
+        {
+
         }
     }
 }

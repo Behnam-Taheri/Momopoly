@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tactical.Monopoly.Queries.R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tactical.Monopoly.Queries.Contracts", "Monopoly\src\Tactical.Monopoly.Queries.Contracts\Tactical.Monopoly.Queries.Contracts.csproj", "{9408315E-50E2-43A8-97E7-C6AD41015FFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.Monopoly.Persistence.Mongo", "Monopoly\src\Tactical.Monopoly.Persistence.Mongo\Tactical.Monopoly.Persistence.Mongo.csproj", "{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tactical.Monopoly.Persistence.Mongo", "Monopoly\src\Tactical.Monopoly.Persistence.Mongo\Tactical.Monopoly.Persistence.Mongo.csproj", "{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactical.Monopoly.Domain.Test", "Monopoly\tests\Tactical.Monopoly.Domain.Test\Tactical.Monopoly.Domain.Test.csproj", "{6F962BD4-2C55-4C8C-AF52-736DFCD8F2DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,10 @@ Global
 		{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F962BD4-2C55-4C8C-AF52-736DFCD8F2DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F962BD4-2C55-4C8C-AF52-736DFCD8F2DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F962BD4-2C55-4C8C-AF52-736DFCD8F2DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F962BD4-2C55-4C8C-AF52-736DFCD8F2DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +137,7 @@ Global
 		{A36B29F6-78DB-48C4-A19B-1BB93A2BA8A7} = {03D8B19E-BE91-49BD-8C55-01F19CDCFE6C}
 		{9408315E-50E2-43A8-97E7-C6AD41015FFA} = {03D8B19E-BE91-49BD-8C55-01F19CDCFE6C}
 		{BDB1CE4F-7B6B-4839-B075-05D36FDD7B91} = {93B00990-0F8C-48E6-AB64-6E4EEAB478A3}
+		{6F962BD4-2C55-4C8C-AF52-736DFCD8F2DC} = {FC42F2C7-9EAA-46A8-BD6F-ACAFABC6481A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F7943FE9-9E63-4E64-98F8-4D472BB0805C}

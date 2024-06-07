@@ -16,6 +16,18 @@ namespace Tactical.Monopoly.Domain.Boards.ValueObjects
         public Guid PlayerId { get; private set; }
         public Guid BoardId { get; private set; }
 
+        public BoardScore AddScore(int score)
+        {
+            Score += score;
+            return new BoardScore(Score, PlayerId, BoardId);
+        }
+
+        public BoardScore MinusScore(int score)
+        {
+            Score -= score;
+            return new BoardScore(Score, PlayerId, BoardId);
+        }
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Score;
