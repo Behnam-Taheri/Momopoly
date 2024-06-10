@@ -63,9 +63,13 @@ void AddDbContext(WebApplicationBuilder webApplicationBuilder)
 {
     webApplicationBuilder.Services.AddDbContext<RetrievalDbContext>(options =>
     {
-        options.UseNpgsql(webApplicationBuilder.Configuration.GetConnectionString("MonopolyConnectionString"),
+        options.UseNpgsql(Environment.GetEnvironmentVariable("MonopolyConnectionString"),
             sqlOptions => { sqlOptions.MigrationsAssembly(typeof(RetrievalDbContext).Assembly.FullName); });
 
+#if DEBUG
+        options.UseNpgsql(webApplicationBuilder.Configuration.GetConnectionString("MonopolyConnectionString"),
+                    sqlOptions => { sqlOptions.MigrationsAssembly(typeof(RetrievalDbContext).Assembly.FullName); });
+#endif
 
         if (webApplicationBuilder.Environment.IsProduction()) return;
 
@@ -81,8 +85,10 @@ void AddDbContext(WebApplicationBuilder webApplicationBuilder)
 
     webApplicationBuilder.Services.AddDbContext<DbContext, MonopolyContext>(options =>
     {
+        options.UseNpgsql(Environment.GetEnvironmentVariable("MonopolyConnectionString"));
+#if DEBUG
         options.UseNpgsql(webApplicationBuilder.Configuration.GetConnectionString("MonopolyConnectionString"));
-
+#endif
         if (webApplicationBuilder.Environment.IsProduction()) return;
 
         options.EnableDetailedErrors();
