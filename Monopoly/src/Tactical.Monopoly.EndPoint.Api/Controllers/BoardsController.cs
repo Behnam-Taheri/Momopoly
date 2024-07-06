@@ -3,6 +3,7 @@ using Tactical.Framework.Application.CQRS.CommandHandling;
 using Tactical.Monopoly.Application.Boards.CommandHandlers;
 using Tactical.Monopoly.Application.Contract.Boards.Commands;
 using Tactical.Monopoly.Domain.Boards.Contracts;
+using Tactical.Monopoly.Domain.Boards.Events;
 using Tactical.Monopoly.Queries.Contracts;
 
 namespace Tactical.Monopoly.EndPoint.Api.Controllers
@@ -29,8 +30,11 @@ namespace Tactical.Monopoly.EndPoint.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(CreateBoardCommand command, CancellationToken cancellationToken)
         {
-            await _commandBus.DispatchAsync(command, cancellationToken);
-            return Ok();
+            Guid id = default;
+            await _commandBus.Execute(command)
+                .On<BoardCreatedEvent>(e => id = e.Id)
+                .DispatchAsync(cancellationToken);
+            return Ok(id);
         }
 
         [HttpDelete("{id}")]

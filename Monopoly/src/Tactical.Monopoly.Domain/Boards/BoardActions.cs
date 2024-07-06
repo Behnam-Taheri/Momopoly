@@ -1,4 +1,5 @@
 ﻿using Tactical.Monopoly.Domain.Boards.Entities;
+using Tactical.Monopoly.Domain.Boards.Events;
 using Tactical.Monopoly.Domain.Boards.Factories;
 using Tactical.Monopoly.Domain.Boards.ValueObjects;
 
@@ -15,6 +16,7 @@ namespace Tactical.Monopoly.Domain.Boards
             GameStartTime = DateTime.UtcNow;
             _boardScores = BoardScoreFactory.Create(Id, playerIds);
             _cells = CellFactory.Create(Id, playerIds);
+            QueueEvent(new BoardCreatedEvent());
         }
 
         public void MovePlayer(Guid playerId, int diceNumber)

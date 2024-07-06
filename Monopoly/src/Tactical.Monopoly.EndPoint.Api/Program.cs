@@ -27,6 +27,15 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        );
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -47,6 +56,7 @@ AddDbContext(builder);
 
 var app = builder.Build();
 
+app.UseCors("CorsPolicy");
 app.UseSwagger();
 app.UseSwaggerUI();
 //if (app.Environment.IsDevelopment())
@@ -55,7 +65,7 @@ app.UseSwaggerUI();
 //    app.UseSwaggerUI();
 //}
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
