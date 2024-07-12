@@ -74,6 +74,24 @@ app.Run();
 
 void AddDbContext(WebApplicationBuilder webApplicationBuilder)
 {
+
+    webApplicationBuilder.Services.AddDbContext<DbContext, MonopolyContext>(options =>
+    {
+        options.UseNpgsql(Environment.GetEnvironmentVariable("MonopolyConnectionString"));
+#if DEBUG
+        options.UseNpgsql(webApplicationBuilder.Configuration.GetConnectionString("MonopolyConnectionString"));
+#endif
+        if (webApplicationBuilder.Environment.IsProduction()) return;
+
+        options.EnableDetailedErrors();
+        options.EnableSensitiveDataLogging();
+        options.ConfigureWarnings(warningLog =>
+        {
+            warningLog.Log(CoreEventId.FirstWithoutOrderByAndFilterWarning,
+                CoreEventId.RowLimitingOperationWithoutOrderByWarning);
+        });
+    });
+
     webApplicationBuilder.Services.AddDbContext<RetrievalDbContext>(options =>
     {
         options.UseNpgsql(Environment.GetEnvironmentVariable("MonopolyConnectionString"),
@@ -94,23 +112,4 @@ void AddDbContext(WebApplicationBuilder webApplicationBuilder)
                 CoreEventId.RowLimitingOperationWithoutOrderByWarning);
         });
     });
-
-
-    webApplicationBuilder.Services.AddDbContext<DbContext, MonopolyContext>(options =>
-    {
-        options.UseNpgsql(Environment.GetEnvironmentVariable("MonopolyConnectionString"));
-#if DEBUG
-        options.UseNpgsql(webApplicationBuilder.Configuration.GetConnectionString("MonopolyConnectionString"));
-#endif
-        if (webApplicationBuilder.Environment.IsProduction()) return;
-
-        options.EnableDetailedErrors();
-        options.EnableSensitiveDataLogging();
-        options.ConfigureWarnings(warningLog =>
-        {
-            warningLog.Log(CoreEventId.FirstWithoutOrderByAndFilterWarning,
-                CoreEventId.RowLimitingOperationWithoutOrderByWarning);
-        });
-    });
-
 }

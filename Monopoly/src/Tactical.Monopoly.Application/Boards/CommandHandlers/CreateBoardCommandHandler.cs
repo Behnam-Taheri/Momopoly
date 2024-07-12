@@ -18,6 +18,7 @@ namespace Tactical.Monopoly.Application.Boards.CommandHandlers
         {
             var board = new Board(command.PlayerIds);
             await _boardRepository.CreateAsync(board);
+            await PublishAggregatedEvents(board);
         }
     }
 }
