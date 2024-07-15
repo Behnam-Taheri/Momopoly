@@ -2,13 +2,14 @@
 
 namespace Tactical.Monopoly.Domain.Boards.Events
 {
-    public record BoardCreatedEvent : IEvent
+    public record HouseCreatedEvent : IEvent
     {
-        public BoardCreatedEvent()
+        public HouseCreatedEvent()
         {
             PublishedOn = DateTime.Now;
         }
         public Guid Id { get; set; }
         public DateTime? PublishedOn { get; set; }
+        public string? Message { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Tactical.Monopoly.Domain.Boards.Enums;
+using Tactical.Monopoly.Domain.Boards.Exceptions;
 using Tactical.Monopoly.Domain.Boards.ValueObjects;
 
 namespace Tactical.Monopoly.Domain.Boards.Entities
@@ -20,19 +21,24 @@ namespace Tactical.Monopoly.Domain.Boards.Entities
 
         public void Buy(Guid playerId)
         {
-            if (!Buyable) throw new Exception();
+            if (!Buyable) throw new NotBuyableCellException(GameException.NotBuyableCell);
 
-            if (OwnerId != default) throw new Exception();
+            if (OwnerId != default) throw new CellHasOwnerException(GameException.CellHasOwner);
 
             OwnerId = playerId;
         }
 
-        public void MakeHouse()
+        public void CreateHouse(List<Cell> cells, Guid playerId)
         {
+            if (!Manufacturable) throw new NotManufacturableCellException(GameException.NotManufacturableCell);
+
+            if (cells.Any(x => x.OwnerId != playerId))
+                throw new NotBuyAllRelatedCellException(GameException.NotBuyAllRelated);
+
             if (NumberOfHouse < MaxNumberOfHouse)
-                NumberOfHouse++;
-            else
-                throw new Exception();
+                    NumberOfHouse++;
+                else
+                    throw new MaximumNumberOfHouseException(GameException.MaximumNumberOfHouse);
         }
 
         public void SetStartCell(List<Guid> playerIds)

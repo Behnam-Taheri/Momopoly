@@ -1,6 +1,9 @@
-﻿namespace Tactical.Framework.Application.CQRS.CommandHandling;
+﻿using Tactical.Framework.Core.Abstractions;
 
-public interface ICommandHandler<in TCommand> where TCommand : ICommand
+namespace Tactical.Framework.Application.CQRS.CommandHandling;
+
+public interface ICommandHandler<in TCommand> : ICommandHandler
+    where TCommand : ICommand
 {
     abstract Task HandleAsync(TCommand command, CancellationToken cancellationToken);
 }

@@ -1,5 +1,7 @@
 ﻿using Tactical.Monopoly.Domain.Boards.Entities;
+using Tactical.Monopoly.Domain.Boards.Enums;
 using Tactical.Monopoly.Domain.Boards.Events;
+using Tactical.Monopoly.Domain.Boards.Exceptions;
 using Tactical.Monopoly.Domain.Boards.Factories;
 using Tactical.Monopoly.Domain.Boards.ValueObjects;
 
@@ -40,6 +42,15 @@ namespace Tactical.Monopoly.Domain.Boards
         {
             var cell = FindCellByPosition(position);
             cell.Buy(playerId);
+            QueueEvent(new CellBoughtEvent() { Message = PrepareMessage(cell, GameMessages.BoughtCell) });
+        }
+
+        public void CreateHouse(short position, Guid playerId)
+        {
+            var cell = FindCellByPosition(position);
+            var relatedCells = FindCellsByGroup(cell.Group);
+            cell.CreateHouse(relatedCells, playerId);
+            QueueEvent(new HouseCreatedEvent() { Message = PrepareMessage(cell, GameMessages.HouseCreated) });
         }
 
         private Cell ChangeCell(Guid playerId, int diceNumber)
@@ -67,6 +78,7 @@ namespace Tactical.Monopoly.Domain.Boards
 
         private Cell FindCellByPlayerId(Guid playerId) => _cells.First(x => x.PlayerIds.Any(i => i.Value == playerId));
         private Cell FindCellByPosition(short position) => _cells.First(x => x.Position == position);
+        private List<Cell> FindCellsByGroup(Group group) => _cells.Where(x => x.Group == group).ToList();
 
         private static void ValidateDiceNumber(int diceNumber)
         {
@@ -77,6 +89,11 @@ namespace Tactical.Monopoly.Domain.Boards
         private void ReplaceScore(BoardScore score)
         {
 
+        }
+
+        private static string PrepareMessage(Cell cell, string message)
+        {
+            return message.Replace("{title}", cell.OwnerId.ToString()).Replace("{cell}", cell.Name);
         }
     }
 }

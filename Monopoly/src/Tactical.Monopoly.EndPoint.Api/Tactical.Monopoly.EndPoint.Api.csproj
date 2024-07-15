@@ -31,6 +31,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tactical.Framework.DependencyInjection\Tactical.Framework.DependencyInjection.csproj" />
     <ProjectReference Include="..\Tactical.Monopoly.Application.Contract\Tactical.Monopoly.Application.Contract.csproj" />
     <ProjectReference Include="..\Tactical.Monopoly.Application\Tactical.Monopoly.Application.csproj" />
     <ProjectReference Include="..\Tactical.Monopoly.Persistence.EF\Tactical.Monopoly.Persistence.EF.csproj" />

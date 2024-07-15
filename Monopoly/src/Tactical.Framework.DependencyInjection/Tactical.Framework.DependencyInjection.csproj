@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Players\Entities\" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tactical.Framework.Domain\Tactical.Framework.Domain.csproj" />
+    <ProjectReference Include="..\Tactical.Framework.Core\Tactical.Framework.Core.csproj" />
   </ItemGroup>
 
 </Project>

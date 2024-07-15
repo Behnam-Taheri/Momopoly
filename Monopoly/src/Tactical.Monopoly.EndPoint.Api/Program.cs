@@ -1,3 +1,6 @@
+using Autofac;
+using Autofac.Core;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
@@ -5,6 +8,7 @@ using Newtonsoft.Json.Serialization;
 using Tactical.Framework.Application.CQRS.CommandHandling;
 using Tactical.Framework.Application.CQRS.EventHandling;
 using Tactical.Framework.Core.Abstractions;
+using Tactical.Framework.DependencyInjection.Modules;
 using Tactical.Framework.Persistence.EF;
 using Tactical.Monopoly.Application.Boards.CommandHandlers;
 using Tactical.Monopoly.Application.Contract.Boards.Commands;
@@ -15,17 +19,18 @@ using Tactical.Monopoly.Queries.Contracts;
 using Tactical.Monopoly.Queries.EF;
 using Tactical.Monopoly.Queries.Retrieval.EF;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });
+
+builder.Host.UseServiceProviderFactory(o => new AutofacServiceProviderFactory(x =>
+{
+    x.RegisterModule(new CommandHandlerRegistrationModule(typeof(CreateBoardCommandHandler).Assembly));
+}));
 
 builder.Services.AddCors(options =>
 {
@@ -46,9 +51,6 @@ builder.Services.AddScoped<IBoardReadRepository, BoardReadRepository>();
 builder.Services.AddScoped<ICommandBus, CommandBus>();
 builder.Services.AddScoped<IEventBus, EventBus>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddTransient<ICommandHandler<CreateBoardCommand>, CreateBoardCommandHandler>();
-builder.Services.AddTransient<ICommandHandler<DeleteBoardCommand>, DeleteBoardCommandHandler>();
-builder.Services.AddTransient<ICommandHandler<MovePlayerCommand>, MovePlayerCommandHandler>();
 
 
 builder.Configuration.GetSection("ConnectionStrings.MonopolyConnectionString");
