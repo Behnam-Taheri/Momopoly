@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IdGen;
+using Microsoft.AspNetCore.Mvc;
 using Tactical.Framework.Application.CQRS.CommandHandling;
 using Tactical.Monopoly.Application.Boards.CommandHandlers;
 using Tactical.Monopoly.Application.Contract.Boards.Commands;
@@ -46,6 +47,17 @@ namespace Tactical.Monopoly.EndPoint.Api.Controllers
 
         [HttpPatch]
         public async Task<IActionResult> Patch(MovePlayerCommand command, CancellationToken cancellationToken)
+        {
+            PlayerMovedToJailEvent @event = default;
+            await _commandBus.Execute(command)
+                .On<PlayerMovedToJailEvent>(e => @event = e)
+                .DispatchAsync(cancellationToken);
+
+            return Ok(@event);
+        }
+
+        [HttpPatch("stay-in-jail")]
+        public async Task<IActionResult> StayInJail(StayInJailCommand command, CancellationToken cancellationToken)
         {
             await _commandBus.DispatchAsync(command, cancellationToken);
             return Ok();

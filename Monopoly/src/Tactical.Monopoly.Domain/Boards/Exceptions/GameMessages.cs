@@ -13,6 +13,7 @@
         public const string MaximumNumberOfHouse = "you can't create more than maximum number of house";
         public const string NotManufacturableCell = "you can't create house in NotManufacturableCell";
         public const string NotBuyAllRelated = "you can't create house when you didn't buy all related cells";
+        public const string InvalidDiceNumber = "Invalid Dice Number";
         
     }
 }

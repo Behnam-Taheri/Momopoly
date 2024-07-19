@@ -9,7 +9,10 @@ namespace Tactical.Monopoly.Domain.Boards
 {
     public partial class Board
     {
-        private const int CountOfCell = 26;
+        private const int CountOfCell = 24;
+        private const int StartReward = 200;
+        private const int JailPosition = 12;
+        private const int JailPrice = 80;
         private Board() { }
 
         public Board(List<Guid> playerIds)
@@ -26,22 +29,38 @@ namespace Tactical.Monopoly.Domain.Boards
             ValidateDiceNumber(diceNumber);
             var currentCell = ChangeCell(playerId, diceNumber);
             CheckOwners(currentCell, playerId);
+            CheckIfCellHasSpecialLogic(currentCell);
         }
 
-        private void CheckOwners(Cell cell, Guid playerId)
+        public void SendPlayerToJail(Guid playerId,bool stay)
         {
-            if (cell.OwnerId != default && cell.OwnerId != playerId)
+            if (!stay)
             {
-                var playerScore = _boardScores.First(x => x.PlayerId == playerId);
-                playerScore = playerScore.MinusScore(cell.GetCost());
+                var playerScore = FindBoardScoresByPlayerId(playerId);
+                playerScore.MinusScore(JailPrice);
             }
+            else
+            {
 
+            }
+        }
+
+        private void CheckIfPlayerPassedStart(int previousPosition, int currentPosition, Guid playerId)
+        {
+            if (currentPosition < previousPosition)
+            {
+                var playerScore = FindBoardScoresByPlayerId(playerId);
+                playerScore.AddScore(StartReward);
+            }
         }
 
         public void BuyCell(short position, Guid playerId)
         {
             var cell = FindCellByPosition(position);
             cell.Buy(playerId);
+            var playerScore = FindBoardScoresByPlayerId(playerId);
+            playerScore.MinusScore(cell.Price);
+
             QueueEvent(new CellBoughtEvent() { Message = PrepareMessage(cell, GameMessages.BoughtCell) });
         }
 
@@ -50,6 +69,8 @@ namespace Tactical.Monopoly.Domain.Boards
             var cell = FindCellByPosition(position);
             var relatedCells = FindCellsByGroup(cell.Group);
             cell.CreateHouse(relatedCells, playerId);
+            var playerScore = FindBoardScoresByPlayerId(playerId);
+            playerScore.MinusScore(cell.PriceOfHouse);
             QueueEvent(new HouseCreatedEvent() { Message = PrepareMessage(cell, GameMessages.HouseCreated) });
         }
 
@@ -59,14 +80,33 @@ namespace Tactical.Monopoly.Domain.Boards
 
             var nextPosition = currentPosition + diceNumber;
 
-            if (currentPosition > 20 && nextPosition > CountOfCell)
-                nextPosition = CountOfCell - currentPosition;
+            if (nextPosition >= CountOfCell)
+                nextPosition -= CountOfCell;
 
             var nextPositionCell = FindCellByPosition((short)nextPosition);
 
             nextPositionCell.AddPlayer(playerId);
 
+            CheckIfPlayerPassedStart(currentPosition, nextPosition, playerId);
+            
             return nextPositionCell;
+        }
+
+        private void CheckIfCellHasSpecialLogic(Cell nextPositionCell)
+        {
+            if (nextPositionCell.Position == JailPosition)
+            {
+                QueueEvent(new PlayerMovedToJailEvent() { Position = JailPosition });
+            }
+        }
+
+        private void CheckOwners(Cell cell, Guid playerId)
+        {
+            if (cell.OwnerId != default && cell.OwnerId != playerId)
+            {
+                var playerScore = FindBoardScoresByPlayerId(playerId);
+                playerScore.MinusScore(cell.GetCost());
+            }
         }
 
         private short GetAndRemoveCurrentPosition(Guid playerId)
@@ -79,11 +119,12 @@ namespace Tactical.Monopoly.Domain.Boards
         private Cell FindCellByPlayerId(Guid playerId) => _cells.First(x => x.PlayerIds.Any(i => i.Value == playerId));
         private Cell FindCellByPosition(short position) => _cells.First(x => x.Position == position);
         private List<Cell> FindCellsByGroup(Group group) => _cells.Where(x => x.Group == group).ToList();
+        private BoardScore FindBoardScoresByPlayerId(Guid playerId) => _boardScores.First(x => x.PlayerId == playerId);
 
         private static void ValidateDiceNumber(int diceNumber)
         {
             if (diceNumber is > 6 or < 1)
-                throw new Exception();
+                throw new InvalidDiceNumberException(GameException.InvalidDiceNumber);
         }
 
         private void ReplaceScore(BoardScore score)

@@ -9,4 +9,6 @@ namespace Tactical.Monopoly.Domain.Boards.Exceptions
     public class NotBuyAllRelatedCellException(string message) : DomainException(message)
     {
     }
+
+    
 }

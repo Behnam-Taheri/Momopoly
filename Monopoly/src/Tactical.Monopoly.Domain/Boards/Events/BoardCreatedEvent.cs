@@ -11,4 +11,17 @@ namespace Tactical.Monopoly.Domain.Boards.Events
         public Guid Id { get; set; }
         public DateTime? PublishedOn { get; set; }
     }
+
+    public record PlayerMovedToJailEvent : IEvent
+    {
+        public PlayerMovedToJailEvent()
+        {
+            PublishedOn = DateTime.Now;
+            SpecialLogic = "Jail";
+        }
+        public Guid Id { get; set; }
+        public DateTime? PublishedOn { get; set; }
+        public short Position { get; set; }
+        public string SpecialLogic { get; private set; }
+    }
 }

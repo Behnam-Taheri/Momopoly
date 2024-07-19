@@ -7,7 +7,8 @@ namespace Tactical.Monopoly.Domain.Boards.Entities
     public partial class Cell
     {
         private Cell() { }
-        public Cell(Guid boardId, string name, short position, Group group, short price, bool buyable, bool manufacturable, int priceOfHouse)
+        public Cell(Guid boardId, string name, short position, Group group, short price, 
+            bool buyable, bool manufacturable, int priceOfHouse,short crossingPrice)
         {
             BoardId = boardId;
             Name = name;
@@ -17,6 +18,7 @@ namespace Tactical.Monopoly.Domain.Boards.Entities
             Buyable = buyable;
             Manufacturable = manufacturable;
             PriceOfHouse = priceOfHouse;
+            PassingPrice= crossingPrice;
         }
 
         public void Buy(Guid playerId)
@@ -59,6 +61,6 @@ namespace Tactical.Monopoly.Domain.Boards.Entities
             playerIds.Remove(new PlayerId(playerId));
         }
 
-        public int GetCost() => Manufacturable ? (NumberOfHouse * PriceOfHouse) + Price : Price;
+        public int GetCost() => Manufacturable ? (NumberOfHouse * PriceOfHouse) + PassingPrice : PassingPrice;
     }
 }

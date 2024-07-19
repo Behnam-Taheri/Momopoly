@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tactical.Framework.Application.CQRS.CommandHandling;
+using Tactical.Monopoly.Application.Contract.Boards.Commands;
 using Tactical.Monopoly.Domain.Boards.Events;
 using Tactical.Monopoly.EndPoint.Api.Requests;
 
@@ -37,6 +38,7 @@ namespace Tactical.Monopoly.EndPoint.Api.Controllers
             return Ok(message);
         }
 
+     
         //[HttpPatch("create-house")]
         //public async Task<IActionResult> CreateHouse(Guid boardId, ChangeCellRequest request, CancellationToken cancellationToken)
         //{

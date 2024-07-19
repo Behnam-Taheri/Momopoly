@@ -7,5 +7,6 @@ namespace Tactical.Monopoly.Application.Contract.Boards.Commands
     public record SellHouseCommand(Guid BoardId, short Position, Guid PlayerId) : ICommand;
     public record MortgageCellCommand(Guid BoardId, short Position, Guid PlayerId) : ICommand;
     public record RemoveMortgageCell(Guid BoardId, short Position, Guid PlayerId) : ICommand;
+    public record StayInJailCommand(Guid BoardId, short Position, Guid PlayerId, bool Stay) : ICommand;
 
 }

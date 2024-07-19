@@ -24,10 +24,10 @@ namespace Tactical.Monopoly.Domain.Boards.Entities
         //TODO
         //ICon
 
-        //TODO move To class
         public int NumberOfHouse { get; private set; }
         public bool Manufacturable { get; private set; }
         public int PriceOfHouse { get; private set; }
+        public short PassingPrice { get; private set; }
 
      
     }
